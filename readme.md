@@ -13,8 +13,8 @@ P3.2   | Main Push button
 
 ## Links
 
-[ _Maybe_ the orignal game on Android](https://www.youtube.com/watch?v=62wMiyt82ng)
-[Similar larger version of the game](https://www.reddit.com/r/nextfuckinglevel/comments/erdvy6/a_neat_small_stacking_game/)
+* [ _Maybe_ the orignal game on Android](https://www.youtube.com/watch?v=62wMiyt82ng)
+* [Similar larger version of the game](https://www.reddit.com/r/nextfuckinglevel/comments/erdvy6/a_neat_small_stacking_game/)
 
 ## Project Hierarchy
 
