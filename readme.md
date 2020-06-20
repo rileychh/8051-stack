@@ -2,7 +2,7 @@
 A game disgned for 8051 series single chips where player try to stack flat
 platforms as high as possible.
 
-## Wiring
+## Wirings
 
 Port | Device
 :-: | :-:
