@@ -1,6 +1,6 @@
 #include <AT89X52.H>
-#include "../inc/common.h"
 #include "../inc/delay.h"
+#include "../inc/common.h"
 
 void delay(u8 th, u8 tl)
 {

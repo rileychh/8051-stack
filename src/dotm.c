@@ -2,6 +2,7 @@
 #include "../inc/common.h"
 #include "../inc/delay.h"
 
+// TODO under constrution
 void dotm_put(u8 buffer[][], u8 length, u8 height) {
     u8 i, j;
 
