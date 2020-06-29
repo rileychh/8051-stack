@@ -41,5 +41,3 @@ To light up a LED in position (x, y):
 * `src/`: where .c files should be.
 
 * `tests/`: simple program for testing each device.
-
-  
