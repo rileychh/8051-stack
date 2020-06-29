@@ -377,49 +377,14 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>STARTUP.A51</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\STARTUP.A51</FilePath>
-            </File>
-            <File>
-              <FileName>common.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\common.c</FilePath>
-            </File>
-            <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>dotm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\dotm.c</FilePath>
-            </File>
-            <File>
-              <FileName>kb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\kb.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\lcd.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\src\main.c</FilePath>
             </File>
             <File>
-              <FileName>sp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\sp.c</FilePath>
-            </File>
-            <File>
-              <FileName>sseg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\sseg.c</FilePath>
+              <FileName>STARTUP.A51</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\src\STARTUP.A51</FilePath>
             </File>
           </Files>
         </Group>
