@@ -1,2 +1,2 @@
--I/home/cheng/.local/share/wineprefixes/default/drive_c/Keil_v5/C51/INC/atmel
+-I/home/cheng/.local/share/wineprefixes/default/drive_c/Keil_v5/C51/INC/Atmel
 -ferror-limit=0
