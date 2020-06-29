@@ -30,11 +30,11 @@ Digits 7LED <= P1.7 get Hi
 
 * How to light a LED dot :
 
-R <= HI 
+R <= HI
 
 C <= Low
 
-* LED dot's port 
+* LED dot's port
 
 HI port
 
