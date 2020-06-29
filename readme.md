@@ -37,5 +37,9 @@ To light up a LED in position (x, y):
 ## Project Hierarchy
 
 * `inc/`: where .h files should be.
+
 * `src/`: where .c files should be.
+
 * `tests/`: simple program for testing each device.
+
+  
