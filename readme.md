@@ -39,3 +39,4 @@ To light up a LED in position (x, y):
 * `inc/`: where .h files should be.
 * `src/`: where .c files should be.
 * `tests/`: simple program for testing each device.
+* `PowerPoint/`: Used to report on stage
