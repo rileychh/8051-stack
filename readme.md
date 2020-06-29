@@ -26,8 +26,8 @@ P1.0 | P1.1 | P1.2 | P1.3 | P1.4 | P1.5 | P1.6 | P1.7
 ### Usage
 
 To light up a LED in position (x, y):
-2. Set C[x] (=1)
 1. Clear R[y] (=0)
+2. Set C[x] (=1)
 
 ## Links
 

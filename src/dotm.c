@@ -1,14 +1,28 @@
 #include <AT89X52.H>
 #include "../inc/frog.h"
 
+void dotm_scan_delay(u8 time);
+
 void dotm_put(u8 buf[8])
 {
-    u8 i, j;
+    u8 y;
 
-    for (i = 0; i < 8; i++)
+    for (y = 0; y < 8; y++)
     {
-        for (j = 0; j < 8; j++)
-        {
-        }
+        DOTM_R = buf[y];
+        DOTM_C = 1 << (7 - y);
+        dotm_scan_delay(1);
     }
 }
+
+void dotm_scan_delay(u8 time)
+{
+    u8 i;
+
+    while (time)
+    {
+        for (i = 120; i; i--);
+        time--;
+    }
+}
+
