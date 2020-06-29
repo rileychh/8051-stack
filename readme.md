@@ -6,8 +6,8 @@ platforms as high as possible.
 
 Port | Device | Abbreviation | Remarks
 :-: | :-: | :-: | :-:
-P0(C), P2(R) | 8 * 8 dot matrix LED display | `dotm` |
-P1           | Seven-segment display | `ssd` |
+P0(C), P2(R) | 8 * 8 dot matrix LED display | `dotm` | Common cathode
+P1           | Seven-segment display        | `ssd` | Common cathode
 P3.4         | Speaker | `sp` |
 P3.2         | Main Push button | `btn` |
 
@@ -26,8 +26,8 @@ P1.0 | P1.1 | P1.2 | P1.3 | P1.4 | P1.5 | P1.6 | P1.7
 ### Usage
 
 To light up a LED in position (x, y):
-1. Set R[x] (=1)
-2. Clear C[y] (=2)
+2. Set C[x] (=1)
+1. Clear R[y] (=0)
 
 ## Links
 
@@ -37,7 +37,5 @@ To light up a LED in position (x, y):
 ## Project Hierarchy
 
 * `inc/`: where .h files should be.
-
 * `src/`: where .c files should be.
-
 * `tests/`: simple program for testing each device.
