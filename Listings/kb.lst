@@ -1,0 +1,13 @@
+C51 COMPILER V9.60.0.0   KB                                                                06/29/2020 19:56:07 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE KB
+OBJECT MODULE PLACED IN .\Objects\kb.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.exe src\kb.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\kb
+                    -.lst) OBJECT(.\Objects\kb.obj)
+
+line level    source
+
+*** ERROR C318 OF src\kb.c: can't open file 'src\kb.c'
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
