@@ -58,5 +58,9 @@ dotm|C1|C2|C3|C4|C5|C6|C7|C8
 ## Project Hierarchy
 
 * `inc/`: where .h files should be.
+
 * `src/`: where .c files should be.
+
 * `tests/`: simple program for testing each device.
+
+  
