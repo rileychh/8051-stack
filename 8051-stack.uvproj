@@ -386,6 +386,16 @@
               <FileType>2</FileType>
               <FilePath>.\src\STARTUP.A51</FilePath>
             </File>
+            <File>
+              <FileName>dotm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\dotm.c</FilePath>
+            </File>
+            <File>
+              <FileName>sp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\sp.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
