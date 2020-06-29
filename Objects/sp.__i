@@ -1,1 +1,0 @@
-"src\sp.c" OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\sp.lst) OBJECT(.\Objects\sp.obj)

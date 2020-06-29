@@ -1,6 +1,0 @@
-".\Objects\main.obj",
-".\Objects\STARTUP.obj",
-".\Objects\dotm.obj",
-".\Objects\sp.obj" 
-TO ".\Objects\8051-stack" 
-PRINT(".\Listings\8051-stack.m51") RAMSIZE(256) 
