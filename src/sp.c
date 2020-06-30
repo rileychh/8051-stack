@@ -9,3 +9,8 @@ void sp_init()
     IT0 = 1; // Set interrupt mode to falling edge
     EA = 1; // Enable main interrupt flag
 }
+
+void sp_play(u8 sound)
+{
+
+}
