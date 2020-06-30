@@ -6,6 +6,7 @@
 #define SP P3_4
 #define DOTM_R P2
 #define DOTM_C P0
+#define SSD P1
 
 #define TH_50MS 60
 #define TL_50MS 176
