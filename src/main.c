@@ -24,7 +24,7 @@ code u8 pitch_TL[] = {
     0x88, 0xF4, 0x59, 0xB8, 0x13, 0x68, 0xB8, 0x04, 0x4C, 0x8F, 0xCF, 0x0B,
     0x44, 0x7A, 0xAC, 0xDC, 0x09, 0x34, 0x5C, 0x82, 0xA6, 0xC7, 0xE7, 0x05};
 
-void onBtnPress(void) interrupt 0
+void onBtnPress() interrupt 0
 {
     EX0 = 0;
 
@@ -37,14 +37,14 @@ void onBtnPress(void) interrupt 0
     TR0 = 1;
 }
 
-void onTimer0(void) interrupt 1 // Speaker oscillator
+void onTimer0() interrupt 1 // Speaker oscillator
 {
     TH0 = pitch_TH[pitch_pos];
     TL0 = pitch_TL[pitch_pos];
     SP = !SP;
 }
 
-void onTimer1(void) interrupt 3 // Speaker note timer
+void onTimer1() interrupt 3 // Speaker note timer
 {
     if (delaycount > 2)
     {
