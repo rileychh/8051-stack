@@ -16,6 +16,7 @@ typedef char i8;
 typedef short i16;
 
 void sp_init();
+u8 sp_play(u8 sound); //0 means you loss one but didn't lose, 1 means you get the point perfectly, 2 means you lose
 
 void dotm_put(u8 buf[8]);
 
