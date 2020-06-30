@@ -4,18 +4,26 @@
 u8 dotm_buf[8];
 
 // GAMESTATS
-u8 isOver = 0;
+code u8 LINE_WIDTH = 6; // 2, 4, 6
+code u8 TICK_SPEED = 50; // Unit: 10ms
 u8 score = 0;
+u8 combo = 0;
 u8 stackHeight = 0;
-u8 currStack = 0;
+u8 currLine = 0;
 
 void main()
 {
+    u8 i;
+
     sp_init();
 
-    while (!isOver)
+    // dotm init
+    for (i = 0; i < 8; i++) dotm_buf[i] = 0x0;
+    
+    for (;;)
     {
 
+        ssd_put(score);
         dotm_put(dotm_buf);
     }
 }
