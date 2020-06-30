@@ -12,12 +12,13 @@ u8 score = 0;
 u8 stackHeight = 0;
 u8 currStack = 0;
 
-void main(void)
+void main()
 {
     sp_init();
 
-    for (;;)
+    while (!isOver)
     {
+
         dotm_put(dotm_buf);
     }
 }
@@ -30,16 +31,12 @@ code u8 pitch_TL[] = {
     0x88, 0xF4, 0x59, 0xB8, 0x13, 0x68, 0xB8, 0x04, 0x4C, 0x8F, 0xCF, 0x0B,
     0x44, 0x7A, 0xAC, 0xDC, 0x09, 0x34, 0x5C, 0x82, 0xA6, 0xC7, 0xE7, 0x05};
 
-void delay()
-{
-}
-
 void onBtnPress() interrupt 0
 {
     EX0 = 0;
 
-    TH1 = (65536 - 50000) / 256;
-    TL1 = (65536 - 50000) % 256;
+    TH1 = TH_50MS;
+    TL1 = TL_50MS;
     TR1 = 1;
 
     TH0 = pitch_TH[pitch_pos];
@@ -70,18 +67,10 @@ void onTimer1() interrupt 3 // Speaker note timer
     }
     else
     {
-        TH1 = (65536 - 50000) / 256;
-        TL1 = (65536 - 50000) % 256;
+        TH1 = TH_50MS;
+        TL1 = TL_50MS;
         delaycount++;
         TR1 = 1;
     }
 }
 
-void scan(void)
-{
-    int i;
-    for (i = 0; i <= 8; i++)
-    {
-        dotm_put(LEDdot[i][]);
-    }
-}

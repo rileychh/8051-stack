@@ -7,6 +7,9 @@
 #define DOTM_R P2
 #define DOTM_C P0
 
+#define TH_50MS 60
+#define TL_50MS 176
+
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef char i8;
