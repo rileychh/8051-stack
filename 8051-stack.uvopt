@@ -211,8 +211,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\dotm.c</PathWithFileName>
-      <FilenameWithoutPath>dotm.c</FilenameWithoutPath>
+      <PathWithFileName>.\src\sp.c</PathWithFileName>
+      <FilenameWithoutPath>sp.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -223,8 +223,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\sp.c</PathWithFileName>
-      <FilenameWithoutPath>sp.c</FilenameWithoutPath>
+      <PathWithFileName>.\src\dotm.c</PathWithFileName>
+      <FilenameWithoutPath>dotm.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
