@@ -4,12 +4,14 @@
 u8 dotm_buf[8];
 
 // GAMESTATS
-code u8 LINE_WIDTH = 6; // 2, 4, 6
 code u8 TICK_SPEED = 50; // Unit: 10ms
 u8 score = 0;
 u8 combo = 0;
 u8 stackHeight = 0;
 u8 currLine = 0;
+i8 linePos = 0; // L/R movement
+u8 moveLeft = 1; // 0: move to right every tick; 1: move to left
+
 
 void main()
 {
@@ -19,64 +21,68 @@ void main()
 
     // dotm init
     for (i = 0; i < 8; i++) dotm_buf[i] = 0x0;
+    dotm_buf[7 - i] = 0x7e; // button: 00****00
     
     for (;;)
     {
+        if (moveLeft)
+        {
+            dotm_buf[linePos] << 1;
+            linePos--;
+        } 
+        else
+        {
+            dotm_buf[linePos] >> 1;
+            linePos++;
+        }
 
+        if (linePos == -6 || linePos == 6) 
+        {
+            moveLeft = !moveLeft;
+        }
+        
         ssd_put(score);
         dotm_put(dotm_buf);
     }
 }
 
-code u8 pitch_TH[] = {
-    0xF8, 0xF8, 0xF9, 0xF9, 0xFA, 0xFA, 0xFA, 0xFB, 0xFB, 0xFB, 0xFB, 0xFC, 0xFC,
-    0xFC, 0xFC, 0xFC, 0xFD, 0xFD, 0xFD, 0xFD, 0xFD, 0xFD, 0xFD, 0xFE, 0xF1, 0xEE};
-
-code u8 pitch_TL[] = {
-    0x88, 0xF4, 0x59, 0xB8, 0x13, 0x68, 0xB8, 0x04, 0x4C, 0x8F, 0xCF, 0x0B, 0x44,
-    0x7A, 0xAC, 0xDC, 0x09, 0x34, 0x5C, 0x82, 0xA6, 0xC7, 0xE7, 0x05, 0x11, 0x3E};
-
 void onBtnPress() interrupt 0
 {
-    EX0 = 0;
-
-    TH1 = TH_50MS;
-    TL1 = TL_50MS;
-    TR1 = 1;
-
-    TH0 = pitch_TH[pitch_pos];
-    TL0 = pitch_TL[pitch_pos];
-    TR0 = 1;
+    u8 i;
+    for (i = 0; i < 8; i++)
+    {
+        // If a LED is on but the below one isn't
+        if (dotm_buf[linePos] >> i & 1
+          > dotm_buf[linePos] >> i & 1)
+        {
+            dotm_buf[linePos] &= ~(1 << i); // that LED is cleared
+        }
+    }
 }
 
-void onTimer0() interrupt 1 // Speaker oscillator.  //0 means you loss one but didn't lose, 1 means you get the point perfectly, 2 means you lose
+code u8 pitch_TH[] = {
+    0xf8, 0xfc, 0xf9, 0xfc, 0xfa, 0xfd, 0xfa, 0xfd,
+    0xfb, 0xfd, 0xfb, 0xfd, 0xfc, 0xfe, 0xfe, 0xff, 0xE2};
+code u8 pitch_TL[] = {
+    0x88, 0x44, 0x59, 0xac, 0x13, 0x09, 0x68, 0x34,
+    0x04, 0x82, 0x8f, 0xc7, 0x0b, 0x05, 0x22, 0x11, 0x23};
+
+void onTimer0() interrupt 1 // Speaker oscillator
 {
-    TH0 = pitch_TH[sp_play(1)];
-    TL0 = pitch_TL[sp_play(1)];
+    TR0 = 0;
+    TH0 = currNote == 0 ? pitch_TH[pitch_pos] : pitch_TH[pitch_pos + 1];
+    TL0 = currNote == 0 ? pitch_TL[pitch_pos] : pitch_TL[pitch_pos + 1];
     SP = !SP;
+    TR0 = 1;
 }
 
 void onTimer1() interrupt 3 // Speaker note timer
 {
-    if (delaycount > 2)
-    {
-        TR0 = TR1 = 0;
-
-        if (pitch_pos < 19)
-            pitch_pos++;
-        else
-            pitch_pos = 0;
-
-        delaycount = 0;
-        EX0 = 1;
-    }
-    else
-    {
-        TH1 = TH_50MS;
-        TL1 = TL_50MS;
-        delaycount++;
-        TR1 = 1;
-    }
+    TR1 = TR0 = 0; // SP OFF
+    TH1 = TH_50MS;
+    TL1 = TL_50MS;
+    currNote++;
+    TR1 = 1;
 }
 
 void scan_delay(u8 time)
