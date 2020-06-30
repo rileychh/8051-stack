@@ -2,9 +2,6 @@
 #include "../inc/frog.h"
 #include "sp.c"
 
-u8 delaycount = 0;
-u8 pitch_pos = 0;
-
 u8 dotm_buf[8];
 
 // GAMESTATS
