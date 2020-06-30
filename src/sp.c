@@ -10,7 +10,7 @@ void sp_init()
     EA = 1;        // Enable main interrupt flag
 }
 
-u8 sp_play(u8 sound)
+void sp_play(u8 sound)
 {
     switch (sound)
     {
@@ -21,6 +21,5 @@ u8 sp_play(u8 sound)
     default:
         pitch_pos = 25; break;
     }
-
-    return pitch_pos;
+    // FIXME
 }

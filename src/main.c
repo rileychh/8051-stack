@@ -1,6 +1,5 @@
 #include <AT89X52.H>
 #include "../inc/frog.h"
-#include "sp.c"
 
 u8 dotm_buf[8];
 
