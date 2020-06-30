@@ -74,3 +74,14 @@ void onTimer1() interrupt 3 // Speaker note timer
         TR1 = 1;
     }
 }
+
+void scan_delay(u8 time)
+{
+    u8 i;
+
+    while (time)
+    {
+        for (i = 120; i; i--);
+        time--;
+    }
+}
