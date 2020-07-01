@@ -2,6 +2,11 @@
 #include "../inc/frog.h"
 
 void arr_shift(u8 *arr, u8 len, u8 new_item, u8 right);
+void sp_init();
+void sp_play(u8 sound); //0 means you loss one but didn't lose, 1 means you get the point perfectly
+
+u8 pitch_pos;
+u8 currNote;
 
 u8 dotm_buf[8];
 
@@ -10,7 +15,7 @@ code u8 TICK_SPEED = 12; // Unit: 4ms
 u8 score = 0;
 u8 combo = 0;
 u8 currLine = 0;
-i8 linePos = 0;  // L/R movement
+u8 linePos = 0;  // L/R movement
 u8 moveLeft = 1; // 0: move to right every tick; 1: move to left
 u8 gameOver = 0;
 
@@ -23,18 +28,18 @@ void main()
     // dotm init
     for (i = 0; i < 8; i++)
         dotm_buf[i] = 0x0;
-    dotm_buf[7 - i] = 0x7e; // button: 00****00
+    dotm_buf[7 - currLine] = 0x7e; // button: 00****00
 
     while (!gameOver)
     {
         if (moveLeft)
         {
-            dotm_buf[linePos] << 1;
+            dotm_buf[7 + linePos] <<= 1;
             linePos--;
         }
         else
         {
-            dotm_buf[linePos] >> 1;
+            dotm_buf[7 - linePos] >>= 1;
             linePos++;
         }
 
@@ -45,6 +50,8 @@ void main()
 
         ssd_put(score);
         dotm_put(dotm_buf);
+
+        // Tick delay
         for (i = 0; i < TICK_SPEED; i++)
             for (j = 480; j; j--)
                 ;
@@ -60,7 +67,7 @@ void main()
 
 void onBtnPress() interrupt 0
 {
-    u8 i, j;
+    u8 i;
 
     for (i = 0; i < 8; i++)
     {
@@ -81,7 +88,7 @@ void onBtnPress() interrupt 0
     linePos++;
     if (linePos == 8)
     {
-        linePos == 7;
+        linePos = 7;
         arr_shift(dotm_buf, 8, 0x00, 1);
     }
 
@@ -139,4 +146,32 @@ void arr_shift(u8 *arr, u8 len, u8 new_item, u8 right)
         arr[i + right] = arr[i + !right];
 
     arr[right ? 0 : len - 1] = new_item;
+}
+
+void sp_init()
+{
+    TMOD = 0x11;   // Timer 0, 1 are 16 bit mode
+    ET0 = ET1 = 1; // Enable timers' interrupt
+    EX0 = 1;       // Enable external interrupt
+    IT0 = 1;       // Set interrupt mode to falling edge
+    EA = 1;        // Enable main interrupt flag
+}
+
+void sp_play(u8 sound)
+{
+    currNote = 0;
+    pitch_pos = sound; // TODO dummy
+
+    TH1 = TH_50MS;
+    TL1 = TL_50MS;
+    TR1 = 1;
+
+    TH0 = currNote == 0 ? pitch_TH[pitch_pos] : pitch_TH[pitch_pos + 1];
+    TL0 = currNote == 0 ? pitch_TL[pitch_pos] : pitch_TL[pitch_pos + 1];
+    TR0 = 1;
+
+    while (currNote < 2)
+        ; // Wait for 2 notes to play
+    currNote = 0;
+    //pitch_pos = pitch_pos == 14 ? pitch_pos = 0 : pitch_pos = pitch_pos + 2;
 }
