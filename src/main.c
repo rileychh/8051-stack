@@ -1,8 +1,5 @@
 #include <AT89X52.H>
-#include "../inc/frog.h" 
-
-u8 delaycount = 0;
-u8 pitch_pos = 0;
+#include "../inc/frog.h"
 
 void arr_shift(u8 *arr, u8 len, u8 new_item, u8 right);
 void sp_init();
@@ -13,7 +10,7 @@ u8 currNote;
 
 u8 dotm_buf[8];
 
-// GAME STATS
+// GAMESTATS
 code u8 TICK_SPEED = 12; // Unit: 4ms
 u8 score = 0;
 u8 combo = 0;
@@ -22,7 +19,7 @@ u8 linePos = 0;  // L/R movement
 u8 moveLeft = 1; // 0: move to right every tick; 1: move to left
 u8 gameOver = 0;
 
-void main(void)
+void main()
 {
     u8 i, j;
 
@@ -68,8 +65,6 @@ void main(void)
     }
 }
 
-}
-		
 void onBtnPress() interrupt 0
 {
     u8 i;
@@ -131,15 +126,9 @@ void onTimer1() interrupt 3 // Speaker note timer
     TR1 = 1;
 }
 
-void scan (void)
+void scan_delay(u8 time)
 {
-	int i ;
-	for (i=0 ; i<=8 ; i++)
-	{
-		dotm_put( LEDdot[i][] );
-	}
-	
-}
+    u8 i;
 
     while (time)
     {
