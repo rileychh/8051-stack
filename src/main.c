@@ -4,78 +4,131 @@
 u8 delaycount = 0;
 u8 pitch_pos = 0;
 
+void arr_shift(u8 *arr, u8 len, u8 new_item, u8 right);
+void sp_init();
+void sp_play(u8 sound); //0 means you loss one but didn't lose, 1 means you get the point perfectly
+
+u8 pitch_pos;
+u8 currNote;
+
 u8 dotm_buf[8];
 
-// GAMESTATS
-u8 isOver = 0;
+// GAME STATS
+code u8 TICK_SPEED = 12; // Unit: 4ms
 u8 score = 0;
-u8 stackHeight = 0;
-u8 currStack = 0;
+u8 combo = 0;
+u8 currLine = 0;
+u8 linePos = 0;  // L/R movement
+u8 moveLeft = 1; // 0: move to right every tick; 1: move to left
+u8 gameOver = 0;
 
 void main(void)
 {
+    u8 i, j;
+
     sp_init();
 
+    // dotm init
+    for (i = 0; i < 8; i++)
+        dotm_buf[i] = 0x0;
+    dotm_buf[7 - currLine] = 0x7e; // button: 00****00
+
+    while (!gameOver)
+    {
+        if (moveLeft)
+        {
+            dotm_buf[7 + linePos] <<= 1;
+            linePos--;
+        }
+        else
+        {
+            dotm_buf[7 - linePos] >>= 1;
+            linePos++;
+        }
+
+        if (linePos == -6 || linePos == 6)
+        {
+            moveLeft = !moveLeft;
+        }
+
+        ssd_put(score);
+        dotm_put(dotm_buf);
+
+        // Tick delay
+        for (i = 0; i < TICK_SPEED; i++)
+            for (j = 480; j; j--)
+                ;
+    }
+
+    sp_play(8);
     for (;;)
     {
+        ssd_put(score);
         dotm_put(dotm_buf);
     }
 }
-
-code u8 pitch_TH[] = {
-    0xF8, 0xF8, 0xF9, 0xF9, 0xFA, 0xFA, 0xFA, 0xFB, 0xFB, 0xFB, 0xFB, 0xFC,
-    0xFC, 0xFC, 0xFC, 0xFC, 0xFD, 0xFD, 0xFD, 0xFD, 0xFD, 0xFD, 0xFD, 0xFE};
-
-code u8 pitch_TL[] = {
-    0x88, 0xF4, 0x59, 0xB8, 0x13, 0x68, 0xB8, 0x04, 0x4C, 0x8F, 0xCF, 0x0B,
-    0x44, 0x7A, 0xAC, 0xDC, 0x09, 0x34, 0x5C, 0x82, 0xA6, 0xC7, 0xE7, 0x05};
-
-void delay ()
-{
 
 }
 		
 void onBtnPress() interrupt 0
 {
-    EX0 = 0;
+    u8 i;
 
-    TH1 = (65536 - 50000) / 256;
-    TL1 = (65536 - 50000) % 256;
-    TR1 = 1;
+    for (i = 0; i < 8; i++)
+    {
+        // If a LED is on but the below one isn't
+        if (dotm_buf[7 - linePos] >> i & 1 > dotm_buf[6 - linePos] >> i & 1)
+        {
+            dotm_buf[linePos] &= ~(1 << i); // that LED is cleared
+        }
+    }
 
-    TH0 = pitch_TH[pitch_pos];
-    TL0 = pitch_TL[pitch_pos];
-    TR0 = 1;
-	
-		MoveBool = 0 ;
+    // If all LEDs are cleared
+    if (!dotm_buf[7 - linePos])
+    {
+        gameOver = 1;
+        return;
+    }
+
+    linePos++;
+    if (linePos == 8)
+    {
+        linePos = 7;
+        arr_shift(dotm_buf, 8, 0x00, 1);
+    }
+
+    sp_play(combo);
+    combo++;
+    if (combo == 7)
+    {
+        combo = 0;
+        sp_play(7);
+    }
 }
+
+code u8 pitch_TH[] = {
+    0xf8, 0xfc, 0xf9, 0xfc, 0xfa, 0xfd, 0xfa, 0xfd, 0xfb,
+    0xfd, 0xfb, 0xfd, 0xfc, 0xfe, 0xfe, 0xff, 0xE2, 0xC4};
+code u8 pitch_TL[] = {
+    0x88, 0x44, 0x59, 0xac, 0x13, 0x09, 0x68, 0x34, 0x04,
+    0x82, 0x8f, 0xc7, 0x0b, 0x05, 0x22, 0x11, 0x23, 0x46};
 
 void onTimer0() interrupt 1 // Speaker oscillator
 {
-    TH0 = pitch_TH[pitch_pos];
-    TL0 = pitch_TL[pitch_pos]; 
+    TR0 = 0;
+    TH0 = currNote == 0 ? pitch_TH[pitch_pos] : pitch_TH[pitch_pos + 1];
+    TL0 = currNote == 0 ? pitch_TL[pitch_pos] : pitch_TL[pitch_pos + 1];
     SP = !SP;
+    TR0 = 1;
 }
 
 void onTimer1() interrupt 3 // Speaker note timer
 {
-    if (delaycount > 2)
-    {
-        TR0 = TR1 = 0;
-			
-        if     (pitch_pos < 19)  pitch_pos++;
-        else    pitch_pos = 0;
-			
-        delaycount = 0;
-        EX0 = 1;
-    }
-    else
-    {
-        TH1 = (65536 - 50000) / 256;
-        TL1 = (65536 - 50000) % 256;
-        delaycount++;
-        TR1 = 1;
-    }
+    TR1 = TR0 = 0; // SP OFF
+    TH1 = TH_50MS;
+    TL1 = TL_50MS;
+    currNote++;
+    TR1 = 1;
 }
 
 void scan (void)
@@ -88,14 +141,48 @@ void scan (void)
 	
 }
 
-void main (void)
+    while (time)
+    {
+        for (i = 120; i; i--)
+            ;
+        time--;
+    }
+}
+
+void arr_shift(u8 *arr, u8 len, u8 new_item, u8 right)
 {
-	int i ;
-	
-	while(1)
-	{
-		
-		
-		
-	}
+    u8 i;
+
+    for (i = 0; i < len - 1; i++)
+        arr[i + right] = arr[i + !right];
+
+    arr[right ? 0 : len - 1] = new_item;
+}
+
+void sp_init()
+{
+    TMOD = 0x11;   // Timer 0, 1 are 16 bit mode
+    ET0 = ET1 = 1; // Enable timers' interrupt
+    EX0 = 1;       // Enable external interrupt
+    IT0 = 1;       // Set interrupt mode to falling edge
+    EA = 1;        // Enable main interrupt flag
+}
+
+void sp_play(u8 sound)
+{
+    currNote = 0;
+    pitch_pos = sound; // TODO dummy
+
+    TH1 = TH_50MS;
+    TL1 = TL_50MS;
+    TR1 = 1;
+
+    TH0 = currNote == 0 ? pitch_TH[pitch_pos] : pitch_TH[pitch_pos + 1];
+    TL0 = currNote == 0 ? pitch_TL[pitch_pos] : pitch_TL[pitch_pos + 1];
+    TR0 = 1;
+
+    while (currNote < 2)
+        ; // Wait for 2 notes to play
+    currNote = 0;
+    //pitch_pos = pitch_pos == 14 ? pitch_pos = 0 : pitch_pos = pitch_pos + 2;
 }

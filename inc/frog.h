@@ -12,8 +12,8 @@ typedef unsigned short u16;
 typedef char i8;
 typedef short i16;
 
-void sp_init();
 
+void scan_delay(u8 time);
 void dotm_put(u8 buf[8]);
 
 #endif // FROG_H
