@@ -396,6 +396,16 @@
               <FileType>1</FileType>
               <FilePath>.\src\dotm.c</FilePath>
             </File>
+            <File>
+              <FileName>ssd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\ssd.c</FilePath>
+            </File>
+            <File>
+              <FileName>frog.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\frog.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

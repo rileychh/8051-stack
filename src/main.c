@@ -10,7 +10,7 @@ u8 currNote;
 
 u8 dotm_buf[8];
 
-// GAMESTATS
+// GAME STATS
 code u8 TICK_SPEED = 12; // Unit: 4ms
 u8 score = 0;
 u8 combo = 0;

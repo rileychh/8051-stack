@@ -8,7 +8,7 @@ void main()
     for (;;)
     {
         SP = !SP;
-        for (i = 1250; i; i--)
+        for (i = 120; i; i--)
             ;
     }
 }
