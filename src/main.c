@@ -1,18 +1,18 @@
 #include <AT89X52.H>
 #include "../inc/frog.h"
 
+void arr_shift(u8 *arr, u8 len, u8 new_item, u8 right);
+
 u8 dotm_buf[8];
 
 // GAMESTATS
 code u8 TICK_SPEED = 12; // Unit: 4ms
 u8 score = 0;
 u8 combo = 0;
-u8 stackHeight = 0;
 u8 currLine = 0;
-i8 linePos = 0; // L/R movement
+i8 linePos = 0;  // L/R movement
 u8 moveLeft = 1; // 0: move to right every tick; 1: move to left
 u8 gameOver = 0;
-
 
 void main()
 {
@@ -21,31 +21,33 @@ void main()
     sp_init();
 
     // dotm init
-    for (i = 0; i < 8; i++) dotm_buf[i] = 0x0;
+    for (i = 0; i < 8; i++)
+        dotm_buf[i] = 0x0;
     dotm_buf[7 - i] = 0x7e; // button: 00****00
-    
+
     while (!gameOver)
     {
         if (moveLeft)
         {
             dotm_buf[linePos] << 1;
             linePos--;
-        } 
+        }
         else
         {
             dotm_buf[linePos] >> 1;
             linePos++;
         }
 
-        if (linePos == -6 || linePos == 6) 
+        if (linePos == -6 || linePos == 6)
         {
             moveLeft = !moveLeft;
         }
-        
+
         ssd_put(score);
         dotm_put(dotm_buf);
         for (i = 0; i < TICK_SPEED; i++)
-            for (j = 480; j; j--);
+            for (j = 480; j; j--)
+                ;
     }
 
     sp_play(8);
@@ -58,23 +60,29 @@ void main()
 
 void onBtnPress() interrupt 0
 {
-    u8 i;
+    u8 i, j;
 
     for (i = 0; i < 8; i++)
     {
         // If a LED is on but the below one isn't
-        if (dotm_buf[7 - linePos] >> i & 1
-          > dotm_buf[6 - linePos] >> i & 1)
+        if (dotm_buf[7 - linePos] >> i & 1 > dotm_buf[6 - linePos] >> i & 1)
         {
             dotm_buf[linePos] &= ~(1 << i); // that LED is cleared
         }
     }
 
     // If all LEDs are cleared
-    if (!dotm_buf[7 - linePos]) 
+    if (!dotm_buf[7 - linePos])
     {
         gameOver = 1;
         return;
+    }
+
+    linePos++;
+    if (linePos == 8)
+    {
+        linePos == 7;
+        arr_shift(dotm_buf, 8, 0x00, 1);
     }
 
     sp_play(combo);
@@ -117,7 +125,18 @@ void scan_delay(u8 time)
 
     while (time)
     {
-        for (i = 120; i; i--);
+        for (i = 120; i; i--)
+            ;
         time--;
     }
+}
+
+void arr_shift(u8 *arr, u8 len, u8 new_item, u8 right)
+{
+    u8 i;
+
+    for (i = 0; i < len - 1; i++)
+        arr[i + right] = arr[i + !right];
+
+    arr[right ? 0 : len - 1] = new_item;
 }
