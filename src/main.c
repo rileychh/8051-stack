@@ -16,7 +16,7 @@ u8 score = 0;
 u8 combo = 0;
 u8 currLine = 0;
 u8 linePos = 0;  // L/R movement
-u8 moveLeft = 1; // 0: move to right every tick; 1: move to left
+u8 moveLeft = 1; // 0: move to left every tick; 1: move to right
 u8 gameOver = 0;
 
 void main()
