@@ -20,19 +20,7 @@ void main()
     sp_init();
 
     for (;;)
-    {
-        if (pos > 16)
-            pos = 0;
-
-        // time = 1000;
-
-        // while (time)
-        // {
-        //     for (i = 120; i; i--)
-        //         ;
-        //     time--;
-        // }
-    }
+        ;
 }
 
 void sp_init()
@@ -48,6 +36,7 @@ void btnPress() interrupt 0
 {
     sp_play(pos);
     pos++;
+    if (pos > 16) pos = 0;
 }
 
 void onTimer0() interrupt 1 // Speaker oscillator
@@ -71,7 +60,7 @@ void onTimer1() interrupt 3 // Speaker note timer
 void sp_play(u8 sound)
 {
     currNote = 0;
-    pitch_pos = sound; // TODO dummy
+    pitch_pos = sound;
 
     TH1 = TH_50MS;
     TL1 = TL_50MS;
@@ -84,5 +73,4 @@ void sp_play(u8 sound)
     while (currNote < 2)
         ; // Wait for 2 notes to play
     currNote = 0;
-    //pitch_pos = pitch_pos == 14 ? pitch_pos = 0 : pitch_pos = pitch_pos + 2;
 }
