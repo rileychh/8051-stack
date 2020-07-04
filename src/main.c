@@ -38,7 +38,7 @@ Y | --------
 7 | ********
 */
 u8 lineX = 0;
-u8 lineY = 0;
+u8 lineY = 7;
 u8 moveRight = 1; // 0: move to right every tick; 1: move to left
 u8 gameOver = 0;
 
@@ -51,22 +51,22 @@ void main()
     // dotm init
     for (i = 0; i < 8; i++)
         dotm_buf[i] = 0x0;
-    dotm_buf[7] = 0x7e; // button: 00****00
+    dotm_buf[lineY] = 0x7e; // button: 00****00
 
     while (!gameOver)
     {
         if (moveRight)
         {
-            dotm_buf[7 + lineX] <<= 1;
-            lineX--;
+            dotm_buf[lineY] <<= 1;
+            lineX++;
         }
         else
         {
-            dotm_buf[7 - lineX] >>= 1;
-            lineX++;
+            dotm_buf[lineY] >>= 1;
+            lineX--;
         }
 
-        if (lineX == -6 || lineX == 6)
+        if (lineX == 0 || lineX == 7)
         {
             moveRight = !moveRight;
         }
