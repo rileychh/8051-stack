@@ -71,7 +71,7 @@ void main()
         }
 
         lineY--; // Move line up
-        if (lineY == 0) lineY = 1; // Line can't top
+        if (lineY == 0) lineY = 1; // Line can't reach top
 
         ssd_put(score);
         dotm_put(dotm_buf);
@@ -94,26 +94,29 @@ void onBtnPress() interrupt 0
 {
     u8 i;
 
+    // Align and cut off
     for (i = 0; i < 7; i++)
     {
         // If a LED is on but the below one isn't
-        if (dotm_buf[lineY] >> i & 1 > dotm_buf[lineY] >> i & 1)
+        if (dotm_buf[lineY] >> i & 1 > dotm_buf[lineY + 1] >> i & 1)
         {
             dotm_buf[lineY] &= ~(1 << i); // that LED is cleared
         }
     }
 
-    // If all LEDs are cleared
+    // If all LEDs are cleared, game over
     if (!dotm_buf[7 - lineX])
     {
         gameOver = 1;
         return;
     }
 
-    lineX++;
-    if (lineX == 8)
+    // Move line upwards and autoscroll
+    lineY--;
+    if (lineY == 0)
     {
-        lineX = 7;
+        lineY = 1;
+        // Shift dotm_buf, 8 bytes long, insert 0, shift right
         arr_shift(dotm_buf, 8, 0x00, 1);
     }
 
