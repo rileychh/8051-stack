@@ -15,7 +15,7 @@ code u8 TICK_SPEED = 12; // Unit: 4ms
 u8 score = 0;
 u8 combo = 0;
 u8 currLine = 0;
-u8 linePos = 0;  // L/R movement
+char linePos = 0;  // L/R movement
 u8 moveLeft = 1; // 0: move to left every tick; 1: move to right
 u8 gameOver = 0;
 
@@ -23,11 +23,11 @@ void main()
 {
     u8 i, j;
 
-    sp_init();
+     sp_init();
 
     // dotm init
-    for (i = 0; i < 8; i++)
-        dotm_buf[i] = 0x0;
+    for (i = 0; i < 8; i++)    
+        dotm_buf[i] = 0x0;    
     dotm_buf[7 - currLine] = 0x7e; // button: 00****00
 
     while (!gameOver)
