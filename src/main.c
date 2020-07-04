@@ -27,7 +27,7 @@ u8 score = 0;
 u8 combo = 0;
 /*
   X 01234567
-Y | -------- 
+Y / -------- 
 0 | ********
 1 | ********
 2 | ********
@@ -65,11 +65,13 @@ void main()
             dotm_buf[lineY] >>= 1;
             lineX--;
         }
-
         if (lineX == 0 || lineX == 7)
         {
             moveRight = !moveRight;
         }
+
+        lineY--; // Move line up
+        if (lineY == 0) lineY = 1; // Line can't top
 
         ssd_put(score);
         dotm_put(dotm_buf);
@@ -92,12 +94,12 @@ void onBtnPress() interrupt 0
 {
     u8 i;
 
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < 7; i++)
     {
         // If a LED is on but the below one isn't
-        if (dotm_buf[7 - lineX] >> i & 1 > dotm_buf[6 - lineX] >> i & 1)
+        if (dotm_buf[lineY] >> i & 1 > dotm_buf[lineY] >> i & 1)
         {
-            dotm_buf[lineX] &= ~(1 << i); // that LED is cleared
+            dotm_buf[lineY] &= ~(1 << i); // that LED is cleared
         }
     }
 
