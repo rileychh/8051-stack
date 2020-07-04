@@ -46,7 +46,7 @@ void main()
 {
     u8 i, j;
 
-    sp_init();
+     sp_init();
 
     // dotm init
     for (i = 0; i < 8; i++)
