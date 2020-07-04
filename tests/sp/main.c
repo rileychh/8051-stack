@@ -13,7 +13,7 @@ code u8 pitch_TL[] = {
 
 u8 currNote = 0, pitch_pos = 0;
 u8 pos = 0, i;
-int time;
+u16 time;
 
 void main()
 {
@@ -24,14 +24,14 @@ void main()
         if (pos > 16)
             pos = 0;
 
-        time = 1000;
+        // time = 1000;
 
-        while (time)
-        {
-            for (i = 120; i; i--)
-                ;
-            time--;
-        }
+        // while (time)
+        // {
+        //     for (i = 120; i; i--)
+        //         ;
+        //     time--;
+        // }
     }
 }
 
