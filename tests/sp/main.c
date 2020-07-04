@@ -38,7 +38,7 @@ void sp_init()
     IT0 = 1;       // Set interrupt mode to falling edge
     EA = 1;        // Enable main interrupt flag
 }
-void btnPress() interrupt 0
+void btnPress() interrupt 0  
 {
 	sp_play(pos);	
 	pos++;
