@@ -8,15 +8,38 @@ void sp_play(u8 sound); //0 means you loss one but didn't lose, 1 means you get 
 u8 pitch_pos;
 u8 currNote;
 
+/*
+i | d_b[i]
+0 | ********
+1 | ********
+2 | ********
+3 | ********
+4 | ********
+5 | ********
+6 | ********
+7 | ********
+*/
 u8 dotm_buf[8];
 
 // GAMESTATS
 code u8 TICK_SPEED = 12; // Unit: 4ms
 u8 score = 0;
 u8 combo = 0;
-u8 currLine = 0;
-u8 linePos = 0;  // L/R movement
-u8 moveLeft = 1; // 0: move to left every tick; 1: move to right
+/*
+  X 01234567
+Y | -------- 
+0 | ********
+1 | ********
+2 | ********
+3 | ********
+4 | ********
+5 | ********
+6 | ********
+7 | ********
+*/
+u8 lineX = 0;
+u8 lineY = 0;
+u8 moveRight = 1; // 0: move to right every tick; 1: move to left
 u8 gameOver = 0;
 
 void main()
@@ -28,24 +51,24 @@ void main()
     // dotm init
     for (i = 0; i < 8; i++)
         dotm_buf[i] = 0x0;
-    dotm_buf[7 - currLine] = 0x7e; // button: 00****00
+    dotm_buf[7] = 0x7e; // button: 00****00
 
     while (!gameOver)
     {
-        if (moveLeft)
+        if (moveRight)
         {
-            dotm_buf[7 + linePos] <<= 1;
-            linePos--;
+            dotm_buf[7 + lineX] <<= 1;
+            lineX--;
         }
         else
         {
-            dotm_buf[7 - linePos] >>= 1;
-            linePos++;
+            dotm_buf[7 - lineX] >>= 1;
+            lineX++;
         }
 
-        if (linePos == -6 || linePos == 6)
+        if (lineX == -6 || lineX == 6)
         {
-            moveLeft = !moveLeft;
+            moveRight = !moveRight;
         }
 
         ssd_put(score);
@@ -72,23 +95,23 @@ void onBtnPress() interrupt 0
     for (i = 0; i < 8; i++)
     {
         // If a LED is on but the below one isn't
-        if (dotm_buf[7 - linePos] >> i & 1 > dotm_buf[6 - linePos] >> i & 1)
+        if (dotm_buf[7 - lineX] >> i & 1 > dotm_buf[6 - lineX] >> i & 1)
         {
-            dotm_buf[linePos] &= ~(1 << i); // that LED is cleared
+            dotm_buf[lineX] &= ~(1 << i); // that LED is cleared
         }
     }
 
     // If all LEDs are cleared
-    if (!dotm_buf[7 - linePos])
+    if (!dotm_buf[7 - lineX])
     {
         gameOver = 1;
         return;
     }
 
-    linePos++;
-    if (linePos == 8)
+    lineX++;
+    if (lineX == 8)
     {
-        linePos = 7;
+        lineX = 7;
         arr_shift(dotm_buf, 8, 0x00, 1);
     }
 
