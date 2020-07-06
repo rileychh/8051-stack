@@ -70,9 +70,6 @@ void main()
             moveRight = !moveRight;
         }
 
-        lineY--; // Move line up
-        if (lineY == 0) lineY = 1; // Line can't reach top
-
         ssd_put(score);
         dotm_put(dotm_buf);
 
@@ -82,8 +79,8 @@ void main()
                 ;
     }
 
-    sp_play(8);
-    for (;;)
+    sp_play(8); // Game over sound
+    for (;;) // Show final frame and buffer
     {
         ssd_put(score);
         dotm_put(dotm_buf);
@@ -105,7 +102,7 @@ void onBtnPress() interrupt 0
     }
 
     // If all LEDs are cleared, game over
-    if (!dotm_buf[7 - lineX])
+    if (!dotm_buf[lineY])
     {
         gameOver = 1;
         return;
