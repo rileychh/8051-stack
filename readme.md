@@ -1,5 +1,6 @@
 # 8051-stack
-A game disgned for 8051 series single chips where player try to stack flat
+
+A game designed for 8051 series single chips where player try to stack flat
 platforms as high as possible.
 
 ## Wiring
@@ -26,12 +27,13 @@ P1.0 | P1.1 | P1.2 | P1.3 | P1.4 | P1.5 | P1.6 | P1.7
 ### Usage
 
 To light up a LED in position (x, y):
+
 1. Clear R[y] (=0)
 2. Set C[x] (=1)
 
 ## Links
 
-* [ _Maybe_ the orignal game on Android](https://www.youtube.com/watch?v=62wMiyt82ng)
+* [Maybe the original game on Android](https://www.youtube.com/watch?v=62wMiyt82ng)
 * [Similar larger version of the game](https://www.reddit.com/r/nextfuckinglevel/comments/erdvy6/a_neat_small_stacking_game/)
 
 ## Project Hierarchy
