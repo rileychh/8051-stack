@@ -1,6 +1,6 @@
 *.uvgui*
 .vs/
 .vscode/
+.idea/
 Listings/
 Objects/
-

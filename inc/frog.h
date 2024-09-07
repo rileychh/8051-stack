@@ -20,7 +20,6 @@ typedef unsigned short u16;
 typedef char i8;
 typedef short i16;
 
-
 void scan_delay(u8 time);
 void dotm_put(u8 buf[8]);
 void ssd_put(u8 num);
